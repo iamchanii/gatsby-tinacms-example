@@ -12,6 +12,45 @@ interface Node {
   parent: Node
 }
 
+type DataJson implements Node {
+  children: [Node!]!
+  fileRelativePath: String
+  id: ID!
+  internal: Internal!
+  parent: Node
+  path: String
+  rawJson: String
+  title: String
+}
+
+type DataJsonConnection {
+  distinct(field: DataJsonFieldsEnum!): [String!]!
+  edges: [DataJsonEdge!]!
+  group(
+    field: DataJsonFieldsEnum!
+    limit: Int
+    skip: Int
+  ): [DataJsonGroupConnection!]!
+  nodes: [DataJson!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DataJsonEdge {
+  next: DataJson
+  node: DataJson!
+  previous: DataJson
+}
+
+type DataJsonGroupConnection {
+  edges: [DataJsonEdge!]!
+  field: String!
+  fieldValue: String
+  nodes: [DataJson!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type Directory implements Node {
   absolutePath: String!
   accessTime(
@@ -191,6 +230,7 @@ type File implements Node {
     #Configures the locale Moment.js will use to format the date.
     locale: String
   ): Date!
+  childDataJson: DataJson
   childImageSharp: ImageSharp
   children: [Node!]!
   ctime(
@@ -518,6 +558,12 @@ type PageInfo {
 }
 
 type Query {
+  allDataJson(
+    filter: DataJsonFilterInput
+    limit: Int
+    skip: Int
+    sort: DataJsonSortInput
+  ): DataJsonConnection!
   allDirectory(
     filter: DirectoryFilterInput
     limit: Int
@@ -554,6 +600,16 @@ type Query {
     skip: Int
     sort: SitePluginSortInput
   ): SitePluginConnection!
+  dataJson(
+    children: NodeFilterListInput
+    fileRelativePath: StringQueryOperatorInput
+    id: StringQueryOperatorInput
+    internal: InternalFilterInput
+    parent: NodeFilterInput
+    path: StringQueryOperatorInput
+    rawJson: StringQueryOperatorInput
+    title: StringQueryOperatorInput
+  ): DataJson
   directory(
     absolutePath: StringQueryOperatorInput
     accessTime: DateQueryOperatorInput
@@ -605,6 +661,7 @@ type Query {
     blksize: IntQueryOperatorInput
     blocks: IntQueryOperatorInput
     changeTime: DateQueryOperatorInput
+    childDataJson: DataJsonFilterInput
     childImageSharp: ImageSharpFilterInput
     children: NodeFilterListInput
     ctime: DateQueryOperatorInput
@@ -857,15 +914,119 @@ type SitePluginPluginOptions {
   name: String
   path: String
   pathCheck: Boolean
+  plugins: [SitePluginPluginOptionsPlugins]
   short_name: String
   start_url: String
   theme_color: String
+}
+
+type SitePluginPluginOptionsPlugins {
+  browserAPIs: [String]
+  id: String
+  name: String
+  nodeAPIs: [String]
+  pluginFilepath: String
+  resolve: String
+  version: String
 }
 
 type SiteSiteMetadata {
   author: String
   description: String
   title: String
+}
+
+enum DataJsonFieldsEnum {
+  children
+  children___children
+  children___children___children
+  children___children___children___children
+  children___children___children___id
+  children___children___id
+  children___children___internal___content
+  children___children___internal___contentDigest
+  children___children___internal___description
+  children___children___internal___fieldOwners
+  children___children___internal___ignoreType
+  children___children___internal___mediaType
+  children___children___internal___owner
+  children___children___internal___type
+  children___children___parent___children
+  children___children___parent___id
+  children___id
+  children___internal___content
+  children___internal___contentDigest
+  children___internal___description
+  children___internal___fieldOwners
+  children___internal___ignoreType
+  children___internal___mediaType
+  children___internal___owner
+  children___internal___type
+  children___parent___children
+  children___parent___children___children
+  children___parent___children___id
+  children___parent___id
+  children___parent___internal___content
+  children___parent___internal___contentDigest
+  children___parent___internal___description
+  children___parent___internal___fieldOwners
+  children___parent___internal___ignoreType
+  children___parent___internal___mediaType
+  children___parent___internal___owner
+  children___parent___internal___type
+  children___parent___parent___children
+  children___parent___parent___id
+  fileRelativePath
+  id
+  internal___content
+  internal___contentDigest
+  internal___description
+  internal___fieldOwners
+  internal___ignoreType
+  internal___mediaType
+  internal___owner
+  internal___type
+  parent___children
+  parent___children___children
+  parent___children___children___children
+  parent___children___children___id
+  parent___children___id
+  parent___children___internal___content
+  parent___children___internal___contentDigest
+  parent___children___internal___description
+  parent___children___internal___fieldOwners
+  parent___children___internal___ignoreType
+  parent___children___internal___mediaType
+  parent___children___internal___owner
+  parent___children___internal___type
+  parent___children___parent___children
+  parent___children___parent___id
+  parent___id
+  parent___internal___content
+  parent___internal___contentDigest
+  parent___internal___description
+  parent___internal___fieldOwners
+  parent___internal___ignoreType
+  parent___internal___mediaType
+  parent___internal___owner
+  parent___internal___type
+  parent___parent___children
+  parent___parent___children___children
+  parent___parent___children___id
+  parent___parent___id
+  parent___parent___internal___content
+  parent___parent___internal___contentDigest
+  parent___parent___internal___description
+  parent___parent___internal___fieldOwners
+  parent___parent___internal___ignoreType
+  parent___parent___internal___mediaType
+  parent___parent___internal___owner
+  parent___parent___internal___type
+  parent___parent___parent___children
+  parent___parent___parent___id
+  path
+  rawJson
+  title
 }
 
 enum DirectoryFieldsEnum {
@@ -1002,6 +1163,48 @@ enum FileFieldsEnum {
   blksize
   blocks
   changeTime
+  childDataJson___children
+  childDataJson___children___children
+  childDataJson___children___children___children
+  childDataJson___children___children___id
+  childDataJson___children___id
+  childDataJson___children___internal___content
+  childDataJson___children___internal___contentDigest
+  childDataJson___children___internal___description
+  childDataJson___children___internal___fieldOwners
+  childDataJson___children___internal___ignoreType
+  childDataJson___children___internal___mediaType
+  childDataJson___children___internal___owner
+  childDataJson___children___internal___type
+  childDataJson___children___parent___children
+  childDataJson___children___parent___id
+  childDataJson___fileRelativePath
+  childDataJson___id
+  childDataJson___internal___content
+  childDataJson___internal___contentDigest
+  childDataJson___internal___description
+  childDataJson___internal___fieldOwners
+  childDataJson___internal___ignoreType
+  childDataJson___internal___mediaType
+  childDataJson___internal___owner
+  childDataJson___internal___type
+  childDataJson___parent___children
+  childDataJson___parent___children___children
+  childDataJson___parent___children___id
+  childDataJson___parent___id
+  childDataJson___parent___internal___content
+  childDataJson___parent___internal___contentDigest
+  childDataJson___parent___internal___description
+  childDataJson___parent___internal___fieldOwners
+  childDataJson___parent___internal___ignoreType
+  childDataJson___parent___internal___mediaType
+  childDataJson___parent___internal___owner
+  childDataJson___parent___internal___type
+  childDataJson___parent___parent___children
+  childDataJson___parent___parent___id
+  childDataJson___path
+  childDataJson___rawJson
+  childDataJson___title
   childImageSharp___children
     @deprecated(
       reason: "Sorting on fields that need arguments to resolve is deprecated."
@@ -2327,6 +2530,14 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___name
   pluginCreator___pluginOptions___path
   pluginCreator___pluginOptions___pathCheck
+  pluginCreator___pluginOptions___plugins
+  pluginCreator___pluginOptions___plugins___browserAPIs
+  pluginCreator___pluginOptions___plugins___id
+  pluginCreator___pluginOptions___plugins___name
+  pluginCreator___pluginOptions___plugins___nodeAPIs
+  pluginCreator___pluginOptions___plugins___pluginFilepath
+  pluginCreator___pluginOptions___plugins___resolve
+  pluginCreator___pluginOptions___plugins___version
   pluginCreator___pluginOptions___short_name
   pluginCreator___pluginOptions___start_url
   pluginCreator___pluginOptions___theme_color
@@ -2448,6 +2659,14 @@ enum SitePluginFieldsEnum {
   pluginOptions___name
   pluginOptions___path
   pluginOptions___pathCheck
+  pluginOptions___plugins
+  pluginOptions___plugins___browserAPIs
+  pluginOptions___plugins___id
+  pluginOptions___plugins___name
+  pluginOptions___plugins___nodeAPIs
+  pluginOptions___plugins___pluginFilepath
+  pluginOptions___plugins___resolve
+  pluginOptions___plugins___version
   pluginOptions___short_name
   pluginOptions___start_url
   pluginOptions___theme_color
@@ -2466,6 +2685,22 @@ input BooleanQueryOperatorInput {
   in: [Boolean]
   ne: Boolean
   nin: [Boolean]
+}
+
+input DataJsonFilterInput {
+  children: NodeFilterListInput
+  fileRelativePath: StringQueryOperatorInput
+  id: StringQueryOperatorInput
+  internal: InternalFilterInput
+  parent: NodeFilterInput
+  path: StringQueryOperatorInput
+  rawJson: StringQueryOperatorInput
+  title: StringQueryOperatorInput
+}
+
+input DataJsonSortInput {
+  fields: [DataJsonFieldsEnum]
+  order: [SortOrderEnum] = [ASC]
 }
 
 input DateQueryOperatorInput {
@@ -2542,6 +2777,7 @@ input FileFilterInput {
   blksize: IntQueryOperatorInput
   blocks: IntQueryOperatorInput
   changeTime: DateQueryOperatorInput
+  childDataJson: DataJsonFilterInput
   childImageSharp: ImageSharpFilterInput
   children: NodeFilterListInput
   ctime: DateQueryOperatorInput
@@ -2818,9 +3054,24 @@ input SitePluginPluginOptionsFilterInput {
   name: StringQueryOperatorInput
   path: StringQueryOperatorInput
   pathCheck: BooleanQueryOperatorInput
+  plugins: SitePluginPluginOptionsPluginsFilterListInput
   short_name: StringQueryOperatorInput
   start_url: StringQueryOperatorInput
   theme_color: StringQueryOperatorInput
+}
+
+input SitePluginPluginOptionsPluginsFilterInput {
+  browserAPIs: StringQueryOperatorInput
+  id: StringQueryOperatorInput
+  name: StringQueryOperatorInput
+  nodeAPIs: StringQueryOperatorInput
+  pluginFilepath: StringQueryOperatorInput
+  resolve: StringQueryOperatorInput
+  version: StringQueryOperatorInput
+}
+
+input SitePluginPluginOptionsPluginsFilterListInput {
+  elemMatch: SitePluginPluginOptionsPluginsFilterInput
 }
 
 input SitePluginSortInput {

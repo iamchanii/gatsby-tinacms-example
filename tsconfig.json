@@ -23,7 +23,7 @@
 
     "strict": true,
     "noImplicitAny": false,
-    // "strictNullChecks": true,              ,
+    "strictNullChecks": false,
     // "strictFunctionTypes": true,           ,
     // "strictBindCallApply": true,           ,
     // "strictPropertyInitialization": true,  ,
