@@ -17,6 +17,7 @@
     "gatsby-plugin-tinacms": "^0.1.17",
     "gatsby-plugin-typescript": "^2.1.23",
     "gatsby-source-filesystem": "^2.1.40",
+    "gatsby-tinacms-git": "^0.2.15",
     "gatsby-transformer-sharp": "^2.3.7",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

@@ -32,7 +32,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-tinacms',
       options: {
-        plugins: [],
+        plugins: ['gatsby-tinacms-git'],
       },
     },
   ],
