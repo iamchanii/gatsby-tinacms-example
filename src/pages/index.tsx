@@ -29,12 +29,14 @@ const IndexPage = () => {
         description: '기존 Hi People 위치에 표시됩니다.',
         name: 'rawJson.title',
         component: 'text',
+        parse: value => value ?? '',
       },
       {
         label: '설명',
         description: '본문에 표시됩니다.',
         name: 'rawJson.description',
         component: 'markdown',
+        parse: value => value ?? '',
       },
     ],
   });
